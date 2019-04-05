@@ -1,0 +1,15 @@
+/etc/dhcpcd.conf:
+
+interface wlan0
+static ip_address=192.168.1.15/24
+static routers=192.168.1.1
+static domain_name_servers=1.1.1.1 8.8.8.8
+
+
+sudo nano /etc/wpa_supplicant/wpa_supplicant.conf
+
+
+network={
+    ssid="TeodoroCasa"
+    psk="Teodoro_Casa"
+}
