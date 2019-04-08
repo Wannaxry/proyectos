@@ -19,12 +19,25 @@ Software necesario para la instalación:
 
 ### Nginx
 
+Para empezar la instalación lo primero que haremos es instalar el Servidor Web *nginx*:
+
 `apt-get install -y nginx`
+
+Una vez instalado movemos el fichero nextcloud.conf que dejare en la carpeta de **Download** que contiene la configuración para el servidor *Nextcloud*, se movera al directotio **Sites-avaible** que es donde alojaremos las futuras configuraciónes de los sitios web antes de ser publicados:
+
 `mv nextcloud.conf /etc/nginx/sites-available/ `
+
+Realizamos un enlace simbólico en el directorio **sites-enable** para activar el sitio web y que **Nextcloud** se nos active:
+
 `ln -s /etc/nginx/sites-available/nextcloud.conf /etc/nginx/sites-enabled`
-`rm /etc/nginx/sites-available/default `
-`rm /etc/nginx/sites-enabled/default` 
-`rm /var/www/html/index.nginx-debian.html`
+
+Eliminamos el fichero que viene por defecto de nginx para evitar errores:
+
+```
+rm /etc/nginx/sites-available/default
+rm /etc/nginx/sites-enabled/default
+rm /var/www/html/index.nginx-debian.html
+```
 
 ### Mysql
 
@@ -95,10 +108,36 @@ sudo apt-get install -y php7.0 php7.0-bz2 php7.0-cli php7.0-curl php7.0-fpm php7
 
 ### Nextcloud (WannaCloud)
 
-`wget -q https://download.nextcloud.com/server/releases nextcloud-12.0.5.zip`
+Descargamos la ultima versión de Nextcloud para instalarlo en el servidor:
+
+`wget -q https://download.nextcloud.com/server/releases/latest.zip`
+
+Descomprimimos el fichero .zip que se nos descarga:
+
 `unzip nextcloud-12.0.5.zip`  
+
+Movemos el directorio a donde queramos alojarlo aunque estos dos pasos también se pueden hacer al revés:
+
 `mv nextcloud /usr/share/` 
+
+Eliminamos el fichero que se nos descargo:
+
 `rm latest.zip` 
-`mkdir /usr/share/nextcloud/`
+
+Creamos el directorio data:
+
+`mkdir /usr/share/nextcloud/data`
+
+Y ejecutamos el script con los comandos aunque tambien podemos ejecutarlos directamente:
+
 `sh permisos.sh`
+
+o
+
+```
+
+```
+
+Y por ultimo recargamos el Servicio para que se carguen los cambios realizados:
+
 `systemctl reload nginx` 
