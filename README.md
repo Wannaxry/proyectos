@@ -19,9 +19,12 @@ Software necesario para la instalación:
 
 ### Nginx
 
-ok << system("rm /etc/nginx/sites-available/default > /dev/null") 
-ok << system("rm /etc/nginx/sites-enabled/default > /dev/null")
-ok << system("apt-get install -y nginx > /dev/null")
+`apt-get install -y nginx`
+`mv nextcloud.conf /etc/nginx/sites-available/ `
+`ln -s /etc/nginx/sites-available/nextcloud.conf /etc/nginx/sites-enabled`
+`rm /etc/nginx/sites-available/default `
+`rm /etc/nginx/sites-enabled/default` 
+`rm /var/www/html/index.nginx-debian.html`
 
 ### Mysql
 
@@ -60,29 +63,42 @@ Realizamos una recarga de los privilegios:
 `Reload privilege tables now? [Y/n] y`
 
 Accedemos a la base de datos mediante:
+
 `mysql -u root -p`
 
 Le ponemos la contraseña de root que pusimos anteriormente y realizamos lo siguiente:
 
 Creamos la base de datos:
 
-create database wannacloud;
+`create database wannacloud;`
 
 Creamos el usuario para la base de datos:
 
-create user 'wannacry'@'localhost' identiFied by 'Atistirma_22';
+`create user 'wannacry'@'localhost' identiFied by 'Atistirma_22';`
 
 Le damos todos los privilegios 
 
-grant all privileges on wannacloud.* to 'wannacry'@'localhost';
+`grant all privileges on wannacloud.* to 'wannacry'@'localhost';`
 
 Recargamos los privilegios:
 
-flush privileges;
+`flush privileges;`
 
 ### PHP 7.0
 
 Para realizar la instalación del **PHP** vamos al terminal y escribimos:
 
-`apt-get install -y php7.0 php7.0-bz2 php7.0-cli php7.0-curl php7.0-gd php7.0-fpm php7.0-intl php7.0-json php7.0-mbstring php7.0-mcrypt php-pear php7.0-imap php-memcache php7.0-pspell php7.0-recode php7.0-tidy php7.0-xmlrpc php7.0-xsl php7.0-mysql php7.0-opcache php7.0-xml php7.0-zip php-imagick php-redis libapache2-mod-php7.0`
+```
+sudo apt-get install -y php7.0 php7.0-bz2 php7.0-cli php7.0-curl php7.0-fpm php7.0-gd php7.0-intl php7.0-json php7.0-mbstring php7.0-mcrypt php7.0-mysql php7.0-opcache php7.0-sqlite3 php7.0-xml php7.0-zip php-apcu php-pear
 
+```
+
+### Nextcloud (WannaCloud)
+
+`wget -q https://download.nextcloud.com/server/releases nextcloud-12.0.5.zip`
+`unzip nextcloud-12.0.5.zip`  
+`mv nextcloud /usr/share/` 
+`rm latest.zip` 
+`mkdir /usr/share/nextcloud/`
+`sh permisos.sh`
+`systemctl reload nginx` 
