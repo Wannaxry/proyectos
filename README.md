@@ -52,7 +52,6 @@ Ahora por seguridad ejecutamos el comando `mysql_secure_instalation`:
 
 Ponemos la contraseña de root
 
-
 `Enter current password for root (enter for none): ******`
 
 Si queremos cambiar la contraseña le ponemos `y` y sino `n`:
@@ -135,9 +134,22 @@ Y ejecutamos el script con los comandos aunque tambien podemos ejecutarlos direc
 o
 
 ```
+chown -R www-data:www-data /usr/share/nextcloud;
+chown -R www-data:www-data /usr/share/nextcloud/data;
+find /usr/share/nextcloud/ -type d -exec chmod 750 {} \; 
+find /usr/share/nextcloud/ -type f -exec chmod 640 {} \; 
+find /usr/share/nextcloud/data -type d -exec chmod 750 {} \; 
+find /usr/share/nextcloud/data -type f -exec chmod 640 {} \;
 
 ```
 
 Y por ultimo recargamos el Servicio para que se carguen los cambios realizados:
 
 `systemctl reload nginx` 
+
+Y entramos en el navegador con la IP de nuestro ordenador, sino sabemos cual es escribimos `ip a` y nos saldra.
+
+Accedemos y ponemos nuestros datos, tanto como administrador, como la base de datos creada anteriormente con sus respectivos campos:
+
+Y una vez completado todo le damos a **Completar** y ya estaría y tocaria esperar a que se instale:
+
