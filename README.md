@@ -11,10 +11,14 @@ Software necesario para la instalación:
 -  ***PHP 7.0***: La versión a usar ya es depende de la versión que quieran instalar, en mi caso cojo esta ya que es la que se me instala en la *raspberry*.
   
 - ***MYSQL***: Para la gestión de base de datos.
- 
-- ***NO-IP***: Usaremos **no-ip** para poder conectarnos a ella por internet, para poder acceder tanto por *navegador* como por *ssh*
+
 - ***Nextcloud***: Es el software el cual se va a usar para este proyecto.
 
+-***SSL***: Agregar un protocolo seguro para navegador y servidor.
+
+ 
+- ***NO-IP***: Usaremos **no-ip** para poder conectarnos a ella por internet, para poder acceder tanto por *navegador* como por *ssh*
+- 
 ## Instalación de WannaCloud
 
 ### Nginx
@@ -37,6 +41,15 @@ Eliminamos el fichero que viene por defecto de nginx para evitar errores:
 rm /etc/nginx/sites-available/default
 rm /etc/nginx/sites-enabled/default
 rm /var/www/html/index.nginx-debian.html
+```
+
+### PHP 7.0
+
+Para realizar la instalación del **PHP** vamos al terminal y escribimos:
+
+```
+sudo apt-get install -y php7.0 php7.0-bz2 php7.0-cli php7.0-curl php7.0-fpm php7.0-gd php7.0-intl php7.0-json php7.0-mbstring php7.0-mcrypt php7.0-mysql php7.0-opcache php7.0-sqlite3 php7.0-xml php7.0-zip php-apcu php-pear
+
 ```
 
 ### Mysql
@@ -96,14 +109,6 @@ Recargamos los privilegios:
 
 `flush privileges;`
 
-### PHP 7.0
-
-Para realizar la instalación del **PHP** vamos al terminal y escribimos:
-
-```
-sudo apt-get install -y php7.0 php7.0-bz2 php7.0-cli php7.0-curl php7.0-fpm php7.0-gd php7.0-intl php7.0-json php7.0-mbstring php7.0-mcrypt php7.0-mysql php7.0-opcache php7.0-sqlite3 php7.0-xml php7.0-zip php-apcu php-pear
-
-```
 
 ### Nextcloud (WannaCloud)
 
@@ -153,3 +158,27 @@ Accedemos y ponemos nuestros datos, tanto como administrador, como la base de da
 
 Y una vez completado todo le damos a **Completar** y ya estaría y tocaria esperar a que se instale:
 
+### SSL
+
+Para tener nuestra web, en este caso **Nextcloud** con una conexión segura usaremos **cerbot** que es un cliente que nos conseguira y renovara de forma automatica los certificados SSL.
+
+Para ello vamos a la pagina oficial [Cerboot](https://certbot.eff.org/) y pondremos nuestro servidor web en este caso *nginx* y el sistema donde este corriendo, en este caso *Debian 9*  y seguimos los comandos.
+
+Aunque yo dejare los mios aquí ya que si tienes *nginx*  y  *Debian 9* va hacer lo mismo:
+
+Primero instalamos los paquetes necesarios:
+
+`sudo apt-get install certbot python-certbot-nginx -t stretch-backports`
+
+Y luego ejecutamos el siguiente comando:
+
+`sudo certbot --nginx`
+
+Elegiremos el numero el cual este asinado nuestro dominio y luego si queremos que se rediriga de http a https cosa que yo pongo por que sino esto a mi parecer no vale para nada.
+
+
+### NO-IP
+
+Para poder conectarse desde cualquier parte del mundo y de forma gratuita tenemos el servicio **NO-IP** gracias a este servicio que te permite hasta 3 host de una forma totalmente gratuita nos permitira acceder remotamente.
+
+Para ello accedemos a la pagina de [NO-IP](https://www.noip.com/) y nos registramos:
