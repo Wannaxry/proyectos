@@ -11,17 +11,52 @@ Software necesario para la instalación:
 -  ***PHP 7.0***: La versión a usar ya es depende de la versión que quieran instalar, en mi caso cojo esta ya que es la que se me instala en la *raspberry*.
   
 - ***MYSQL***: Para la gestión de base de datos.
- 
-- ***NO-IP***: Usaremos **no-ip** para poder conectarnos a ella por internet, para poder acceder tanto por *navegador* como por *ssh*
+
 - ***Nextcloud***: Es el software el cual se va a usar para este proyecto.
 
+-***SSL***: Agregar un protocolo seguro para navegador y servidor.
+
+ 
+- ***NO-IP***: Usaremos **no-ip** para poder conectarnos a ella por internet, para poder acceder tanto por *navegador* como por *ssh*
+- 
 ## Instalación de WannaCloud
 
 ### Nginx
 
+<<<<<<< HEAD
  rm /etc/nginx/sites-available/default   
  rm /etc/nginx/sites-enabled/default 
  apt-get install -y nginx 
+=======
+Para empezar la instalación lo primero que haremos es instalar el Servidor Web *nginx*:
+
+`apt-get install -y nginx`
+
+Una vez instalado movemos el fichero nextcloud.conf que dejare en la carpeta de **Download** que contiene la configuración para el servidor *Nextcloud*, se movera al directotio **Sites-avaible** que es donde alojaremos las futuras configuraciónes de los sitios web antes de ser publicados:
+
+`mv nextcloud.conf /etc/nginx/sites-available/ `
+
+Realizamos un enlace simbólico en el directorio **sites-enable** para activar el sitio web y que **Nextcloud** se nos active:
+
+`ln -s /etc/nginx/sites-available/nextcloud.conf /etc/nginx/sites-enabled`
+
+Eliminamos el fichero que viene por defecto de nginx para evitar errores:
+
+```
+rm /etc/nginx/sites-available/default
+rm /etc/nginx/sites-enabled/default
+rm /var/www/html/index.nginx-debian.html
+```
+
+### PHP 7.0
+
+Para realizar la instalación del **PHP** vamos al terminal y escribimos:
+
+```
+sudo apt-get install -y php7.0 php7.0-bz2 php7.0-cli php7.0-curl php7.0-fpm php7.0-gd php7.0-intl php7.0-json php7.0-mbstring php7.0-mcrypt php7.0-mysql php7.0-opcache php7.0-sqlite3 php7.0-xml php7.0-zip php-apcu php-pear
+
+```
+>>>>>>> 7267b06e616d0cc738a1b6c2d91dcc55ee65f852
 
 ### Mysql
 
@@ -37,7 +72,6 @@ Para ello instalamos mysql:
 Ahora por seguridad ejecutamos el comando `mysql_secure_instalation`:
 
 Ponemos la contraseña de root
-
 
 `Enter current password for root (enter for none): ******`
 
@@ -62,29 +96,101 @@ Realizamos una recarga de los privilegios:
 `Reload privilege tables now? [Y/n] y`
 
 Accedemos a la base de datos mediante:
+
 `mysql -u root -p`
 
 Le ponemos la contraseña de root que pusimos anteriormente y realizamos lo siguiente:
 
 Creamos la base de datos:
 
-create database wannacloud;
+`create database wannacloud;`
 
 Creamos el usuario para la base de datos:
 
-create user 'wannacry'@'localhost' identiFied by 'Atistirma_22';
+`create user 'wannacry'@'localhost' identiFied by 'Atistirma_22';`
 
 Le damos todos los privilegios 
 
-grant all privileges on wannacloud.* to 'wannacry'@'localhost';
+`grant all privileges on wannacloud.* to 'wannacry'@'localhost';`
 
 Recargamos los privilegios:
 
-flush privileges;
+`flush privileges;`
 
-### PHP 7.0
 
-Para realizar la instalación del **PHP** vamos al terminal y escribimos:
+### Nextcloud (WannaCloud)
 
+Descargamos la ultima versión de Nextcloud para instalarlo en el servidor:
+
+`wget -q https://download.nextcloud.com/server/releases/latest.zip`
+
+Descomprimimos el fichero .zip que se nos descarga:
+
+`unzip nextcloud-12.0.5.zip`  
+
+Movemos el directorio a donde queramos alojarlo aunque estos dos pasos también se pueden hacer al revés:
+
+`mv nextcloud /usr/share/` 
+
+Eliminamos el fichero que se nos descargo:
+
+`rm latest.zip` 
+
+Creamos el directorio data:
+
+`mkdir /usr/share/nextcloud/data`
+
+Y ejecutamos el script con los comandos aunque tambien podemos ejecutarlos directamente:
+
+`sh permisos.sh`
+
+o
+
+```
+chown -R www-data:www-data /usr/share/nextcloud;
+chown -R www-data:www-data /usr/share/nextcloud/data;
+find /usr/share/nextcloud/ -type d -exec chmod 750 {} \; 
+find /usr/share/nextcloud/ -type f -exec chmod 640 {} \; 
+find /usr/share/nextcloud/data -type d -exec chmod 750 {} \; 
+find /usr/share/nextcloud/data -type f -exec chmod 640 {} \;
+
+```
+
+Y por ultimo recargamos el Servicio para que se carguen los cambios realizados:
+
+`systemctl reload nginx` 
+
+Y entramos en el navegador con la IP de nuestro ordenador, sino sabemos cual es escribimos `ip a` y nos saldra.
+
+Accedemos y ponemos nuestros datos, tanto como administrador, como la base de datos creada anteriormente con sus respectivos campos:
+
+Y una vez completado todo le damos a **Completar** y ya estaría y tocaria esperar a que se instale:
+
+### SSL
+
+Para tener nuestra web, en este caso **Nextcloud** con una conexión segura usaremos **cerbot** que es un cliente que nos conseguira y renovara de forma automatica los certificados SSL.
+
+Para ello vamos a la pagina oficial [Cerboot](https://certbot.eff.org/) y pondremos nuestro servidor web en este caso *nginx* y el sistema donde este corriendo, en este caso *Debian 9*  y seguimos los comandos.
+
+Aunque yo dejare los mios aquí ya que si tienes *nginx*  y  *Debian 9* va hacer lo mismo:
+
+Primero instalamos los paquetes necesarios:
+
+`sudo apt-get install certbot python-certbot-nginx -t stretch-backports`
+
+Y luego ejecutamos el siguiente comando:
+
+`sudo certbot --nginx`
+
+Elegiremos el numero el cual este asinado nuestro dominio y luego si queremos que se rediriga de http a https cosa que yo pongo por que sino esto a mi parecer no vale para nada.
+
+
+### NO-IP
+
+<<<<<<< HEAD
 `sudo apt-get install -y php7.0 php7.0-bz2 php7.0-cli php7.0-curl php7.0-fpm php7.0-gd php7.0-intl php7.0-json php7.0-mbstring php7.0-mcrypt php7.0-mysql php7.0-opcache php7.0-sqlite3 php7.0-xml php7.0-zip php-apcu php-pear`
+=======
+Para poder conectarse desde cualquier parte del mundo y de forma gratuita tenemos el servicio **NO-IP** gracias a este servicio que te permite hasta 3 host de una forma totalmente gratuita nos permitira acceder remotamente.
+>>>>>>> 7267b06e616d0cc738a1b6c2d91dcc55ee65f852
 
+Para ello accedemos a la pagina de [NO-IP](https://www.noip.com/) y nos registramos:
