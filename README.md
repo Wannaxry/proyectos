@@ -16,9 +16,8 @@ Software necesario para la instalación:
 
 -***SSL***: Agregar un protocolo seguro para navegador y servidor.
 
- 
 - ***NO-IP***: Usaremos **no-ip** para poder conectarnos a ella por internet, para poder acceder tanto por *navegador* como por *ssh*
-- 
+
 ## Instalación de WannaCloud
 
 ### Nginx
