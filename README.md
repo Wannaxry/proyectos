@@ -22,7 +22,6 @@ Software necesario para la instalación:
 
 ### Nginx
 
-<<<<<<< HEAD
  rm /etc/nginx/sites-available/default   
  rm /etc/nginx/sites-enabled/default 
  apt-get install -y nginx 
@@ -58,8 +57,6 @@ sudo apt-get install -y php7.0 php7.0-bz2 php7.0-cli php7.0-curl php7.0-fpm php7
 >>>>>>> 7267b06e616d0cc738a1b6c2d91dcc55ee65f852
 
 ### Mysql
-
-Los primeros pasos no tienen orden, cada uno elige como lo instala pero yo lo realizo de esta manera por que me resulta mas facíl a la hora se realizar la isntalación.
 
 Lo primero que hago es instalar mysql, creo la base de datos y configuro el usuario asignandole todos los permisos:
 
@@ -186,10 +183,6 @@ Elegiremos el numero el cual este asinado nuestro dominio y luego si queremos qu
 
 ### NO-IP
 
-<<<<<<< HEAD
-`sudo apt-get install -y php7.0 php7.0-bz2 php7.0-cli php7.0-curl php7.0-fpm php7.0-gd php7.0-intl php7.0-json php7.0-mbstring php7.0-mcrypt php7.0-mysql php7.0-opcache php7.0-sqlite3 php7.0-xml php7.0-zip php-apcu php-pear`
-=======
 Para poder conectarse desde cualquier parte del mundo y de forma gratuita tenemos el servicio **NO-IP** gracias a este servicio que te permite hasta 3 host de una forma totalmente gratuita nos permitira acceder remotamente.
->>>>>>> 7267b06e616d0cc738a1b6c2d91dcc55ee65f852
 
 Para ello accedemos a la pagina de [NO-IP](https://www.noip.com/) y nos registramos:
