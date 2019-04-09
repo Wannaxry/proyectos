@@ -20,11 +20,10 @@ Software necesario para la instalación:
 
 ## Instalación de WannaCloud
 
-### Nginx
+Los primeros pasos no tienen orden, cada uno elige como lo instala pero yo lo realizo de esta manera por que me resulta mas facíl a la hora se realizar la isntalación. Pero lo que si es importante recalcar es el uso al final del `systemctl reload nginx` para recargar nginx con todos los cambios.
 
- rm /etc/nginx/sites-available/default   
- rm /etc/nginx/sites-enabled/default 
- apt-get install -y nginx 
+
+### Nginx
 =======
 Para empezar la instalación lo primero que haremos es instalar el Servidor Web *nginx*:
 
@@ -46,15 +45,11 @@ rm /etc/nginx/sites-enabled/default
 rm /var/www/html/index.nginx-debian.html
 ```
 
-### PHP 7.0
+ ### PHP 7.0
 
-Para realizar la instalación del **PHP** vamos al terminal y escribimos:
+ Para instalar la versión de *php* para nextcloud lo que tendremos que poner en el terminal son los siguientes paquetes:
 
-```
-sudo apt-get install -y php7.0 php7.0-bz2 php7.0-cli php7.0-curl php7.0-fpm php7.0-gd php7.0-intl php7.0-json php7.0-mbstring php7.0-mcrypt php7.0-mysql php7.0-opcache php7.0-sqlite3 php7.0-xml php7.0-zip php-apcu php-pear
-
-```
->>>>>>> 7267b06e616d0cc738a1b6c2d91dcc55ee65f852
+ `apt-get install -y php7.0 php7.0-bz2 php7.0-cli php7.0-curl php7.0-fpm php7.0-gd php7.0-intl php7.0-json php7.0-mbstring php7.0-mcrypt php7.0-mysql php7.0-opcache php7.0-sqlite3 php7.0-xml php7.0-zip php-apcu php-pear`
 
 ### Mysql
 
@@ -161,28 +156,3 @@ Y entramos en el navegador con la IP de nuestro ordenador, sino sabemos cual es 
 Accedemos y ponemos nuestros datos, tanto como administrador, como la base de datos creada anteriormente con sus respectivos campos:
 
 Y una vez completado todo le damos a **Completar** y ya estaría y tocaria esperar a que se instale:
-
-### SSL
-
-Para tener nuestra web, en este caso **Nextcloud** con una conexión segura usaremos **cerbot** que es un cliente que nos conseguira y renovara de forma automatica los certificados SSL.
-
-Para ello vamos a la pagina oficial [Cerboot](https://certbot.eff.org/) y pondremos nuestro servidor web en este caso *nginx* y el sistema donde este corriendo, en este caso *Debian 9*  y seguimos los comandos.
-
-Aunque yo dejare los mios aquí ya que si tienes *nginx*  y  *Debian 9* va hacer lo mismo:
-
-Primero instalamos los paquetes necesarios:
-
-`sudo apt-get install certbot python-certbot-nginx -t stretch-backports`
-
-Y luego ejecutamos el siguiente comando:
-
-`sudo certbot --nginx`
-
-Elegiremos el numero el cual este asinado nuestro dominio y luego si queremos que se rediriga de http a https cosa que yo pongo por que sino esto a mi parecer no vale para nada.
-
-
-### NO-IP
-
-Para poder conectarse desde cualquier parte del mundo y de forma gratuita tenemos el servicio **NO-IP** gracias a este servicio que te permite hasta 3 host de una forma totalmente gratuita nos permitira acceder remotamente.
-
-Para ello accedemos a la pagina de [NO-IP](https://www.noip.com/) y nos registramos:
