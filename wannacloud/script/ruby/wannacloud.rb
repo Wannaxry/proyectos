@@ -25,11 +25,9 @@ puts "[INFO] mysql checking..."
 
 ok = []
 ok << system("apt-get install mysql-server -y > /dev/null")
-ok << system("mysql -u root -patistirma22 -e 'create database wannacloud' > /dev/null ")
-ok << system("mysql -u root -patistirma22 -e 'create user 'wannacry'@'%' identiFied by 'Atistirma_22'' > /dev/null ")
-ok << system("mysql -u root -patistirma22 -e 'grant all privileges on wannacloud.* to 'wannacry'@'%';'' > /dev/null ")
-ok << system("mysql -u root -patistirma22 -e 'update mysql.user set password=PASSWORD("atistirma22") where user='wannacry';' > /dev/null ")
-ok << system("mysql -u root -patistirma22 -e 'flush privileges' > /dev/null ")
+ok << system("wget -q https://raw.githubusercontent.com/Wannaxry/script/master/wannacloud/database.sql")
+ok << system("mysql < database.sql")
+ok << system("rm database.sql' > /dev/null ")
 ok << system("service mysql restart > /dev/null ")
 
 puts "[INFO] mysql ok"
