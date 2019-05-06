@@ -2,20 +2,6 @@
 # a: Se realiza la instalación completa del script
 all = ARGV[0].to_s
 
-bd, bduser, bdpassword = ARGV
-
-if ARGV.length !
-
-if all != '-u'
-  puts "DB: #{bd}"
-  bd= STDIN.gets.chomp
-  puts "User: #{bduser}:"
-  bduser = STDIN.gets.chomp
-  puts "#{bdpassword}"
-  require 'io/console'
-  bdpassword = STDIN.noecho(&:gets).chomp
-end
-
 if all != "ruby"  
   puts "Prueba o pierde" 
   exit
@@ -39,11 +25,11 @@ puts "[INFO] mysql checking..."
 
 ok = []
 ok << system("apt-get install mysql-server -y > /dev/null")
-ok << system("mysql -u root -patistirma22 -e "create database wannacloud" > /dev/null ")
-ok << system("mysql -u root -patistirma22 -e "create user 'wannacry'@'%' identiFied by 'Atistirma_22'" > /dev/null ")
-ok << system("mysql -u root -patistirma22 -e "grant all privileges on wannacloud.* to 'wannacry'@'%';" > /dev/null ")
-ok << system("mysql -u root -patistirma22 -e "update mysql.user set password=PASSWORD("atistirma22") where user='wannacry';" > /dev/null ")
-ok << system("mysql -u root -patistirma22 -e "flush privileges" > /dev/null ")
+ok << system("mysql -u root -patistirma22 -e 'create database wannacloud' > /dev/null ")
+ok << system("mysql -u root -patistirma22 -e 'create user 'wannacry'@'%' identiFied by 'Atistirma_22'' > /dev/null ")
+ok << system("mysql -u root -patistirma22 -e 'grant all privileges on wannacloud.* to 'wannacry'@'%';'' > /dev/null ")
+ok << system("mysql -u root -patistirma22 -e 'update mysql.user set password=PASSWORD("atistirma22") where user='wannacry';' > /dev/null ")
+ok << system("mysql -u root -patistirma22 -e 'flush privileges' > /dev/null ")
 ok << system("service mysql restart > /dev/null ")
 
 puts "[INFO] mysql ok"
