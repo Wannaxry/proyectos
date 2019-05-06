@@ -2,10 +2,14 @@
 # a: Se realiza la instalación completa del script
 all = ARGV[0].to_s
 
-if all != "ruby"  
-  puts "Prueba o pierde" 
-  exit
-end
+if argument == '-u'
+  puts "DB:"
+  bd = STDIN.gets.chomp
+  puts "User:"
+  bduser = STDIN.gets.chomp
+  puts "Password"
+  require 'io/console'
+  bdpassword = STDIN.noecho(&:gets).chomp
 
 puts "[INFO] update checking..."
 
@@ -25,7 +29,11 @@ puts "[INFO] mysql checking..."
 
 ok = []
 ok << system("apt-get install mysql-server -y > /dev/null")
-ok << system("mysql < database.sql > /dev/null ")
+ok << system("mysql -u root -patistirma22 -e "create database {bd}" > /dev/null ")
+ok << system("mysql -u root -patistirma22 -e "create user {bduser}@'%' identiFied by {bdpassword}" > /dev/null ")
+ok << system("mysql -u root -patistirma22 -e "grant all privileges on wannacloud.* to {bdpassword}@'%';" > /dev/null ")
+ok << system("mysql -u root -patistirma22 -e "update mysql.user set password=PASSWORD({bdpassword}) where user={bduser};" > /dev/null ")
+ok << system("mysql -u root -patistirma22 -e "flush privileges" > /dev/null ")
 ok << system("service mysql restart > /dev/null ")
 
 puts "[INFO] mysql ok"
@@ -41,6 +49,7 @@ puts "[INFO] Nginx checking..."
 
 ok = []
 ok << system("apt-get install -y nginx > /dev/null")
+ok << system("wget -q https://raw.githubusercontent.com/Wannaxry/script/master/wannacloud/nextcloud.conf> /dev/null")
 ok << system("mv nextcloud.conf /etc/nginx/sites-available/ > /dev/null")
 ok << system("ln -s /etc/nginx/sites-available/nextcloud.conf /etc/nginx/sites-enabled/ > /dev/null") 
 ok << system("rm /etc/nginx/sites-available/default > /dev/null") 
@@ -77,7 +86,9 @@ ok << system("mv nextcloud/* /var/www/html > /dev/null ")
 ok << system("rm -r nextcloud/ > /dev/null ")
 ok << system("rm latest-13.zip > /dev/null ")
 ok << system("mkdir /var/www/html/data")
+ok << system("wget -q https://raw.githubusercontent.com/Wannaxry/script/master/wannacloud/permisos.sh")
 ok << system("sh permisos.sh")
+ok << system("rm permisos.sh")
 ok << system("systemctl reload nginx > /dev/null") 
 
 ok.each_with_index do |state, index|
