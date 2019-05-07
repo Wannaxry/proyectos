@@ -4,8 +4,11 @@ MAINTAINER wannaxry
 
 RUN apt-get update
 RUN apt-get install mysql-server -y
-RUN mysql < database.sql
-RUN service mysql restart
+RUN mysql -u root -e "create database wannacloud"
+RUN mysql -u root -e "'wannacry'@'%' identiFied by 'Atistirma_22'"
+RUN mysql -u root -e "all privileges on wannacloud.* to 'wannacry'@'%'"
+RUN mysql -u root -e "update mysql.user set password=PASSWORD("atistirma22") where user='wannacry'"
+RUN mysql -u root -e "flush privileges"
 
 
 RUN apt-get install -y nginx  
