@@ -1,0 +1,18 @@
+# Crear container docker mysql
+
+docker run --name mysqlcry -e MYSQL_ROOT_PASSWORD=wannacloud -d mysql
+
+# Crear base de datos:
+
+docker run --name mysqlwp -e MYSQL_ROOT_PASSWORD=wordpressdocker \
+                          -e MYSQL_DATABASE=wordpress \
+                          -e MYSQL_USER=wordpress \
+                          -e MYSQL_PASSWORD=wordpresspwd \
+                          -v /db/mysql:/var/lib/mysql \
+                          -d mysql
+
+
+# Conectar 
+
+docker exec -it mysqlcry mysql -e user -p
+
