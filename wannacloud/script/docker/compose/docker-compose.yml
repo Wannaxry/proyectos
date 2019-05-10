@@ -12,10 +12,10 @@ services:
     volumes:
       - db:/var/lib/mysql
     environment:
-      - MYSQL_ROOT_PASSWORD=
-      - MYSQL_PASSWORD=
-      - MYSQL_DATABASE=nextcloud
-      - MYSQL_USER=nextcloud
+      - MYSQL_ROOT_PASSWORD=chema
+      - MYSQL_PASSWORD=chema
+      - MYSQL_DATABASE=wannacloud
+      - MYSQL_USER=wannacry
 
   app:
     image: nextcloud:fpm
