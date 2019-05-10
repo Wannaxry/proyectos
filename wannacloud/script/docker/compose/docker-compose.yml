@@ -12,8 +12,8 @@ services:
     volumes:
       - db:/var/lib/mysql
     environment:
-      - MYSQL_ROOT_PASSWORD=chema
-      - MYSQL_PASSWORD=chema
+      - MYSQL_ROOT_PASSWORD=Islascanarias_22
+      - MYSQL_PASSWORD=Islascanarias_22
       - MYSQL_DATABASE=wannacloud
       - MYSQL_USER=wannacry
 
