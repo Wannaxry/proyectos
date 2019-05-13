@@ -1,3 +1,0 @@
-docker run -d --name dbwannacloud -e MYSQL_ROOT_PASSWORD=wannacloud mysql
-
-$ docker exec -it mysql-db mysql -p (-u usuario)
