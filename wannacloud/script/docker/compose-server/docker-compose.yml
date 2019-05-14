@@ -20,7 +20,7 @@ services:
   app:
     image: nextcloud
     ports:
-      - 8080:80
+      - 80:80
     links:
       - db
     volumes:
@@ -29,9 +29,9 @@ services:
       - NEXTCLOUD_ADMIN_USER=wannacry
       - NEXTCLOUD_ADMIN_PASSWORD=Islascanarias_22
       - NEXTCLOUD_DATA_DIR=/var/www/html/data
-#      - NEXTCLOUD_TRUSTED_DOMAINS=IP
       - MYSQL_DATABASE=wannacloud
       - MYSQL_USER=wannacry
       - MYSQL_PASSWORD=Islascanarias_22
       - MYSQL_HOST=db
     restart: always
+
