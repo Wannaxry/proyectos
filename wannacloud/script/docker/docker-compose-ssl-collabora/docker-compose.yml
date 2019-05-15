@@ -1,0 +1,104 @@
+version: '3.5'
+services:
+  reverse-proxy:
+    networks:
+      - nextcloud
+
+  mail-relay:
+    networks:
+      - nextcloud
+
+  nextcloud:
+    image: nextcloud:latest
+    container_name: nextcloud
+    hostname: nextcloud
+    - NEXTCLOUD_ADMIN_USER=wannacry
+      - NEXTCLOUD_ADMIN_PASSWORD=Islascanarias_22
+      - NEXTCLOUD_DATA_DIR=/var/www/html/data
+      - MYSQL_DATABASE=wannacloud
+      - MYSQL_USER=wannacry
+      - MYSQL_PASSWORD=Islascanarias_22
+      - MYSQL_HOST=db
+      - VIRTUAL_HOST=wannacloud.ddns.net
+      - LETSENCRYPT_HOST=wannacloud.ddns.net
+      - LETSENCRYPT_EMAIL=chemaleonlugo@gmail.com
+    volumes:
+      - nextcloud-html:/var/www/html
+      - nextcloud-ssl:/etc/ssl
+    labels:
+      - traefik.enable=true
+      - traefik.port=80
+      - traefik.frontend.rule=Host:
+      - traefik.nextcloud-dav.frontend.rule=Host:cloud.jmlion.com;Path:/.well-known/carddav,/.well-known/caldav;ReplacePath:/remote.php/dav
+      - traefik.nextcloud-webfinger.frontend.rule=Host:cloud.jmlion.com;Path:/.well-known/webfinger;ReplacePath:/public.php?service=webfinger
+      - traefik.docker.network=nextcloud
+      - traefik.frontend.headers.STSSeconds=15552000
+      - com.ouroboros.enable=true
+    networks:
+      - nextcloud
+    restart: unless-stopped
+    depends_on:
+      - nextcloud-db
+      - office
+
+  nextcloud-db:
+    image: mariadb:latest
+    container_name: nextcloud-db
+    environment:
+      - MYSQL_ROOT_PASSWORD=Islascanarias_22
+      - MYSQL_PASSWORD=Islascanarias_22
+      - MYSQL_DATABASE=wannacloud
+      - MYSQL_USER=wannacry
+    volumes:
+      - nextcloud-database:/var/lib/mysql
+    labels:
+      - "traefik.enable=false"
+      - "com.ouroboros.enable=true"
+    restart: unless-stopped
+    networks:
+      - nextcloud
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin -u $$MYSQL_USER --password=$$MYSQL_PASSWORD ping || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  office:
+    image: collabora/code:latest
+    container_name: office
+    environment:
+      - domain=cloud.jmlion.com
+      - username=wannacry
+      - password=Islascanarias_22
+      - server_name=ofice.jmlion.com
+      - "extra_params=--o:ssl.enable=false --o:ssl.termination=true"
+      - dictionaries=en_US
+    labels:
+      - traefik.enable=true
+      - traefik.web.frontend.rule=Host:
+      - traefik.port=9980
+      - traefik.protocol=http
+      - traefik.docker.network=nextcloud
+      - traefik.frontend.passHostHeader=true
+      - traefik.frontend.headers.forceSTSHeader=true
+      - traefik.frontend.headers.STSSeconds=15552000
+      - traefik.frontend.headers.STSIncludeSubdomains=true
+      - com.ouroboros.enable=true
+    restart: unless-stopped
+    networks:
+      - nextcloud
+    cap_add:
+      - MKNOD 
+    expose:
+      - "9980"
+    tty: true
+
+networks:
+  nextcloud:
+
+
+volumes:
+  nextcloud-html:
+  nextcloud-ssl:
+  nextcloud-database:
+
