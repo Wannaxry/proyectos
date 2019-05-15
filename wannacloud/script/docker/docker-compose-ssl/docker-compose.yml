@@ -45,10 +45,10 @@ services:
       - db:/var/lib/mysql
       - /etc/localtime:/etc/localtime:ro
     environment:
-      - MYSQL_ROOT_PASSWORD=Islascanarias_22
-      - MYSQL_PASSWORD=Islascanarias_22
-      - MYSQL_DATABASE=wannacloud
-      - MYSQL_USER=wannacry
+      - MYSQL_ROOT_PASSWORD=toor
+      - MYSQL_PASSWORD=mysql
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
     restart: unless-stopped
   
   app:
@@ -68,16 +68,9 @@ services:
       - ./app/themes:/var/www/html/themes
       - /etc/localtime:/etc/localtime:ro
     environment:
-      - NEXTCLOUD_ADMIN_USER=wannacry
-      - NEXTCLOUD_ADMIN_PASSWORD=Islascanarias_22
-      - NEXTCLOUD_DATA_DIR=/var/www/html/data
-      - MYSQL_DATABASE=wannacloud
-      - MYSQL_USER=wannacry
-      - MYSQL_PASSWORD=Islascanarias_22
-      - MYSQL_HOST=db
-      - VIRTUAL_HOST=wannacloud.ddns.net
-      - LETSENCRYPT_HOST=wannacloud.ddns.net
-      - LETSENCRYPT_EMAIL=chemaleonlugo@gmail.com
+      - VIRTUAL_HOST=nextcloud.YOUR-DOMAIN
+      - LETSENCRYPT_HOST=nextcloud.YOUR-DOMAIN
+      - LETSENCRYPT_EMAIL=YOUR-EMAIL
     restart: unless-stopped
 
 volumes:
