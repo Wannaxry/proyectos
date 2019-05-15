@@ -27,7 +27,7 @@ ok = []
 ok << system("apt-get install mysql-server -y > /dev/null")
 ok << system("wget -q https://raw.githubusercontent.com/Wannaxry/script/master/wannacloud/database.sql")
 ok << system("mysql < database.sql")
-ok << system("rm database.sql' > /dev/null ")
+ok << system("rm database.sql > /dev/null ")
 ok << system("service mysql restart > /dev/null ")
 
 puts "[INFO] mysql ok"
