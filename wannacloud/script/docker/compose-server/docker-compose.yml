@@ -11,8 +11,7 @@ services:
     restart: always
     volumes:
       - db:/var/lib/mysql
-    env_file:
-      - date.env
+
 
   app:
     image: nextcloud
@@ -22,6 +21,4 @@ services:
       - db
     volumes:
       - nextcloud:/var/www/html
-    env_file:
-      - date.env
     restart: always
