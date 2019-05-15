@@ -1,77 +1,54 @@
-version: '2'
-
+version: '3'
 services:
-  proxy:
-    image: jwilder/nginx-proxy
-    container_name: proxy
+  mysql:
+    image: mysql:${MYSQL_VERSION}
+    container_name: mysql
+    restart: always
+    env_file:
+      - date.env
+    volumes:
+      - "${DATA_DIR}/mysql:/var/lib/mysql"
+    
+  nextcloud:
+    image: nextcloud:${NEXTCLOUD_VERSION}
+    container_name: nextcloud
+    restart: always
+    volumes:
+      - "${DATA_DIR}/nextcloud:/var/www/html"
+      - "${DATA_DIR}/mysql:/var/lib/mysql"
+    links:
+      - mysql:mysql
+    env_file:
+      - .env
+    depends_on:
+      - mysql
+
+  reverse-proxy:
+    image: jwilder/nginx-proxy:alpine
+    container_name: nginx-proxy
+    restart: always
     ports:
       - 80:80
       - 443:443
+    labels:
+      com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy: "true"
     volumes:
-      - ./proxy/conf.d:/etc/nginx/conf.d
-      - ./proxy/vhost.d:/etc/nginx/vhost.d
-      - ./proxy/html:/usr/share/nginx/html
-      - ./proxy/certs:/etc/nginx/certs:ro
+      - "${DATA_DIR}/nginx/certs:/etc/nginx/certs:ro"
+      - "${DATA_DIR}/nginx/vhosts:/etc/nginx/vhost.d"
+      - "${DATA_DIR}/nginx/html:/usr/share/nginx/html"
+      - ./nginx.conf:/etc/nginx/proxy.conf
       - /var/run/docker.sock:/tmp/docker.sock:ro
-    networks:
-      - proxy-tier
-    restart: always
 
   letsencrypt-companion:
     image: jrcs/letsencrypt-nginx-proxy-companion
-    container_name: letsencrypt-companion
-    volumes_from:
-      - proxy
+    container_name: letsencrypt
+    restart: always
     volumes:
+      - "${DATA_DIR}/nginx/certs:/etc/nginx/certs"
+      - "${DATA_DIR}/nginx/vhosts:/etc/nginx/vhost.d"
+      - "${DATA_DIR}/nginx/html:/usr/share/nginx/html"
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./proxy/certs:/etc/nginx/certs:rw
-    restart: always
-
-  web:
-    image: nginx
-    container_name: nextcloud_webserver
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
-    links:
-      - app
-    volumes_from:
-      - app
+    depends_on:
+      - reverse-proxy
     env_file:
       - date.env
-    networks:
-      - proxy-tier
-    restart: always
-
-  app:
-    image: nextcloud:fpm
-    container_name: nextcloud_fpm
-    links:
-      - db
-    volumes:
-      - ./nextcloud/apps:/var/www/html/apps
-      - ./nextcloud/config:/var/www/html/config
-      - ./nextcloud/data:/var/www/html/data
-    
-      env_file:
-      - date.env
-
-      networks:
-      - proxy-tier
-    restart: always
-
-    
-  db:
-    image: mariadb
-    container_name: db
-    volumes:
-      - ./nextcloud/db:/var/lib/mysql
-    env_file:
-      - date.env
-    networks:
-      - proxy-tier
-    restart: always
-
-networks:
-  proxy-tier:
-    external:
-      name: nginx-proxy
