@@ -15,11 +15,11 @@ services:
       - APC_SHM_SIZE=128M
       - OPCACHE_MEM_SIZE=128
       - CRON_PERIOD=15m
-      - VIRTUAL_HOST=<cloud.domain.tld>
+      - VIRTUAL_HOST=cloud.jmlion.com
       - VIRTUAL_NETWORK=proxy-ssl
       - VIRTUAL_PORT=8888
-      - LETSENCRYPT_HOST=<cloud.domain.tld>
-      - LETSENCRYPT_EMAIL=<admin@domain.tld>
+      - LETSENCRYPT_HOST=cloud.jmlion.com
+      - LETSENCRYPT_EMAIL=chemaleonlugo@ŋmail.com
     volumes:
       - ./data:/data
       - ./config:/config
@@ -33,11 +33,10 @@ services:
     restart: always
     privileged: true
     environment:
-      - MYSQL_ROOT_PASSWORD=<password>
-      - MYSQL_USER=user
+      - MYSQL_ROOT_PASSWORD=Atistirma_22
+      - MYSQL_USER=wannacry
       - MYSQL_DATABASE=db
-      - MYSQL_PASSWORD=<password>
-      - TZ="America/Chicago"
+      - MYSQL_PASSWORD=Atistirma_22
     volumes:
       - ./mysql:/var/lib/mysql
     networks:
@@ -56,12 +55,12 @@ services:
       - MKNOD
     environment:
       - domain=<cloud.domain.tld>
-      - VIRTUAL_HOST=<office.domain.tld>
+      - VIRTUAL_HOST=office.jmlion.com
       - VIRTUAL_NETWORK=proxy-ssl
       - VIRTUAL_PORT=9980
       - VIRTUAL_PROTO=https
-      - LETSENCRYPT_HOST=<office.domain.tld>
-      - LETSENCRYPT_EMAIL=<admin@domain.tld>
+      - LETSENCRYPT_HOST=office.jmlion.com
+      - LETSENCRYPT_EMAIL=chemaleonlugo@gmail.com
     networks:
       - front
 
