@@ -1,0 +1,35 @@
+version: '2'
+
+services:
+
+  proxy_nginx:
+    image: jwilder/nginx-proxy
+    container_name: proxy_nginx
+    privileged: true
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./proxy/certs:/etc/nginx/certs:ro
+      - ./proxy/vhost.d:/etc/nginx/vhost.d
+      - ./proxy/conf.d:/etc/nginx/conf.d
+      - ./proxy/html:/usr/share/nginx/html
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    networks:
+      - front
+
+  proxy_letsencrypt:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    container_name: proxy_letsencrypt
+    privileged: true
+    volumes:
+      - ./proxy/certs:/etc/nginx/certs:rw
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    volumes_from:
+      - proxy_nginx
+
+networks:
+  front:
+    external:
+      name: proxy-ssl

@@ -1,0 +1,72 @@
+version: '2'
+
+services:
+
+  app:
+    image: wonderfall/nextcloud
+    privileged: true
+    links:
+      - db
+      - collabora
+    environment:
+      - UID=1000
+      - GID=1000
+      - UPLOAD_MAX_SIZE=10G
+      - APC_SHM_SIZE=128M
+      - OPCACHE_MEM_SIZE=128
+      - CRON_PERIOD=15m
+      - VIRTUAL_HOST=<cloud.domain.tld>
+      - VIRTUAL_NETWORK=proxy-ssl
+      - VIRTUAL_PORT=8888
+      - LETSENCRYPT_HOST=<cloud.domain.tld>
+      - LETSENCRYPT_EMAIL=<admin@domain.tld>
+    volumes:
+      - ./data:/data
+      - ./config:/config
+      - ./apps:/apps2
+    networks:
+      - front
+      - back
+
+  db:
+    image: mariadb:10
+    restart: always
+    privileged: true
+    environment:
+      - MYSQL_ROOT_PASSWORD=<password>
+      - MYSQL_USER=user
+      - MYSQL_DATABASE=db
+      - MYSQL_PASSWORD=<password>
+      - TZ="America/Chicago"
+    volumes:
+      - ./mysql:/var/lib/mysql
+    networks:
+      - back
+
+  redis:
+    image: redis
+    networks:
+      - back
+
+  collabora:
+    image: collabora/code
+    expose:
+      - 9980
+    cap_add:
+      - MKNOD
+    environment:
+      - domain=<cloud.domain.tld>
+      - VIRTUAL_HOST=<office.domain.tld>
+      - VIRTUAL_NETWORK=proxy-ssl
+      - VIRTUAL_PORT=9980
+      - VIRTUAL_PROTO=https
+      - LETSENCRYPT_HOST=<office.domain.tld>
+      - LETSENCRYPT_EMAIL=<admin@domain.tld>
+    networks:
+      - front
+
+networks:
+  front:
+    external:
+      name: proxy-ssl
+  back:
