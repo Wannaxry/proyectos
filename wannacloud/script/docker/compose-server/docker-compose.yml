@@ -2,7 +2,7 @@ version: '3'
 
 services:
    cloud-db:
-     container_name: ${DB_CONTAINER_NAME}
+     container_name: mariadb
      image: mariadb:latest
      restart: unless-stopped
      volumes:
@@ -16,7 +16,7 @@ services:
    cloud-app:
      depends_on:
        - cloud-db
-     container_name: ${APP_CONTAINER_NAME}
+     container_name: nextcloud
      image: nextcloud:latest
      restart: unless-stopped
      volumes:
