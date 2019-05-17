@@ -30,7 +30,7 @@ services:
     volumes:
       - nextcloud:/var/www/html:ro
     environment:
-      - VIRTUAL_HOST=
+      - VIRTUAL_HOST=cloud.jmlion.com
     depends_on:
       - app
     networks:

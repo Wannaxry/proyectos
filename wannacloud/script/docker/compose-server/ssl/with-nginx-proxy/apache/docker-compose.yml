@@ -8,7 +8,7 @@ services:
     volumes:
       - db:/var/lib/mysql
     environment:
-      - MYSQL_ROOT_PASSWORD=
+      - MYSQL_ROOT_PASSWORD=atistirma22
     env_file:
       - db.env
 
@@ -18,9 +18,9 @@ services:
     volumes:
       - nextcloud:/var/www/html
     environment:
-      - VIRTUAL_HOST=
-      - LETSENCRYPT_HOST=
-      - LETSENCRYPT_EMAIL=
+      - VIRTUAL_HOST=cloud.jmlion.com
+      - LETSENCRYPT_HOST=cloud.jmlion.com
+      - LETSENCRYPT_EMAIL=chemaleonlugo@gmail.com
       - MYSQL_HOST=db
     env_file:
       - db.env
