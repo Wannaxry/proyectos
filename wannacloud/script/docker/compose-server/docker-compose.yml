@@ -1,29 +1,54 @@
-version: '3'
+version: '2'
 
 services:
-   cloud-db:
-     container_name: mariadb
-     image: mariadb:latest
-     restart: unless-stopped
-     volumes:
-        - ${LOCAL_DB_DIR}:/var/lib/mysql
-     env_file:
-      - .env
 
-   cloud-app:
-     depends_on:
-       - cloud-db
-     container_name: nextcloud
-     image: nextcloud:latest
-     restart: unless-stopped
-     volumes:
-       - ${LOCAL_DATA_DIR}:/var/www/html
-       - ${LOCAL_CONF_DIR}:/var/www/html/config
-       - ${LOCAL_APPS_DIR}:/var/www/html/apps
-     env_file:
-      - .env
+  db:
+    image: mariadb
+    restart: always
+    volumes:
+      - db:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=Islascanarias_22
+      - MYSQL_PASSWORD=Islascanarias_22
+      - MYSQL_DATABASE=wannacloud
+      - MYSQL_USER=Wannacry
 
-networks:
-    default:
-       external:
-         name: ${NETWORK}
+  app:
+    image: nextcloud
+    ports:
+      - 80:80
+    links:
+      - db
+    volumes:
+      - nextcloud:/var/www/html
+    environment:
+      - MYSQL_ROOT_PASSWORD=Islascanarias_22
+      - MYSQL_PASSWORD=Islascanarias_22
+      - MYSQL_DATABASE=wannacloud
+      - MYSQL_USER=Wannacry
+      - NEXTCLOUD_ADMIN_USER=Wannacry
+      - NEXTCLOUD_ADMIN_PASSWORD=Wannacry
+    restart:
+      always
+
+  online:
+    image: libreoffice/online:master
+    environment:
+      domain: cloud.jmlion.com
+      username: Wannacry
+      password: Islascanarias
+      extra_params: --o:ssl.enable=false
+      DONT_GEN_SSL_CERT: 1
+    volumes:
+      - config-volume:/etc/loolwsd
+    cap_add:
+      - MKNOD
+    ports:
+      - "9980:9980"
+    restart:
+      unless-stopped
+
+volumes:
+  config-volume:
+  nextcloud:
+  db:
