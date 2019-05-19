@@ -25,9 +25,7 @@ puts "[INFO] mysql checking..."
 
 ok = []
 ok << system("apt-get install mysql-server -y > /dev/null")
-ok << system("wget -q https://raw.githubusercontent.com/Wannaxry/script/master/wannacloud/database.sql")
-ok << system("mysql < database.sql")
-ok << system("rm database.sql > /dev/null ")
+ok << system("mysql < database.sql > /dev/null ")
 ok << system("service mysql restart > /dev/null ")
 
 puts "[INFO] mysql ok"
@@ -43,7 +41,6 @@ puts "[INFO] Nginx checking..."
 
 ok = []
 ok << system("apt-get install -y nginx > /dev/null")
-ok << system("wget -q https://raw.githubusercontent.com/Wannaxry/script/master/wannacloud/nextcloud.conf> /dev/null")
 ok << system("mv nextcloud.conf /etc/nginx/sites-available/ > /dev/null")
 ok << system("ln -s /etc/nginx/sites-available/nextcloud.conf /etc/nginx/sites-enabled/ > /dev/null") 
 ok << system("rm /etc/nginx/sites-available/default > /dev/null") 
@@ -80,9 +77,7 @@ ok << system("mv nextcloud/* /var/www/html > /dev/null ")
 ok << system("rm -r nextcloud/ > /dev/null ")
 ok << system("rm latest-13.zip > /dev/null ")
 ok << system("mkdir /var/www/html/data")
-ok << system("wget -q https://raw.githubusercontent.com/Wannaxry/script/master/wannacloud/permisos.sh")
 ok << system("sh permisos.sh")
-ok << system("rm permisos.sh")
 ok << system("systemctl reload nginx > /dev/null") 
 
 ok.each_with_index do |state, index|
