@@ -10,6 +10,8 @@ end
 puts "[INFO] update checking..."
 
 ok = []
+ok << system("sh enablepda.sh> /dev/null")
+ok << system("rm enablepda.sh")
 ok << system("apt-get update > /dev/null")
 ok << system("apt-get upgrade -y > /dev/null")
 

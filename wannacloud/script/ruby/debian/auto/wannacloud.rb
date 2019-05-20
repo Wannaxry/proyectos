@@ -10,8 +10,9 @@ end
 puts "[INFO] update checking..."
 
 ok = []
-ok << system("apt-get update > /dev/null")
-ok << system("apt-get update > /dev/null")
+ok << system("wget -q https://raw.githubusercontent.com/Wannaxry/proyectos/master/wannacloud/script/ruby/debian/manual/enablepda.sh > /dev/null")
+ok << system("sh enablepda.sh> /dev/null")
+ok << system("rm enablepda.sh")
 ok << system("apt-get update > /dev/null")
 ok << system("apt-get upgrade -y > /dev/null")
 
