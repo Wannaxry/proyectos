@@ -10,9 +10,8 @@ end
 puts "[INFO] update checking..."
 
 ok = []
-ok << system("apt install apt-transport-https lsb-release ca-certificates -y > /dev/null")
-ok << system("wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg > /dev/null")
-ok << system("echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list > /dev/null")
+ok << system("apt-get update > /dev/null")
+ok << system("apt-get update > /dev/null")
 ok << system("apt-get update > /dev/null")
 ok << system("apt-get upgrade -y > /dev/null")
 
