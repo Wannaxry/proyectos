@@ -64,8 +64,7 @@ puts "[INFO] nginx ok"
 puts "[INFO] php checking..."
 
 ok = []
-ok << system("sudo apt install -y php-fpm php-mbstring php-xmlrpc php-soap php-apcu php-smbclient php-ldap php-redis php-gd php-xml php-intl php-json php-imagick php-mysql php-cli php-mcrypt php-ldap php-zip php-curl > /dev/null")
-
+ok << system("apt-get install -y php7.0 php7.0-bz2 php7.0-cli php7.0-curl php7.0-fpm php7.0-gd php7.0-intl php7.0-json php7.0-mbstring php7.0-mcrypt php7.0-mysql php7.0-opcache php7.0-sqlite3 php7.0-xml php7.0-zip php-apcu php-pear > /dev/null")
 ok.each_with_index do |state, indecdx|
   if not state
     puts "[ERROR] php step #{index}!!!"
@@ -77,9 +76,9 @@ puts "[INFO] php ok"
 puts "[INFO] servicio Nextcloud checking..."
 
 ok = []
-ok << system("wget -q https://download.nextcloud.com/server/releases/latest.zip")
-ok << system("unzip latest.zip -d /usr/share/nginx/ > /dev/null")
-ok << system("rm latest.zip > /dev/null")
+ok << system("wget -q https://download.nextcloud.com/server/releases/latest-13.zip")
+ok << system("unzip latest-13.zip -d /usr/share/nginx/ > /dev/null")
+ok << system("rm latest-13.zip > /dev/null")
 ok << system("chown www-data:www-data /usr/share/nginx/nextcloud/ -R")
 ok << system("systemctl reload nginx > /dev/null") 
 
