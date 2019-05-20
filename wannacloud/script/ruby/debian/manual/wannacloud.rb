@@ -58,7 +58,7 @@ puts "[INFO] nginx ok"
 puts "[INFO] php checking..."
 
 ok = []
-ok << system("apt-get install -y php7.0 php7.0-bz2 php7.0-cli php7.0-curl php7.0-fpm php7.0-gd php7.0-intl php7.0-json php7.0-mbstring php7.0-mcrypt php7.0-mysql php7.0-opcache php7.0-sqlite3 php7.0-xml php7.0-zip php-apcu php-pear > /dev/null")
+ok << system("apt-get install -y php7.2-mysql php-fpm php-imagick php7.2-common php7.2-gd php7.2-json php7.2-curl  php7.2-zip php7.2-xml php7.2-mbstring php7.2-bz2 php7.2-intl > /dev/null")
 
 ok.each_with_index do |state, indecdx|
   if not state
