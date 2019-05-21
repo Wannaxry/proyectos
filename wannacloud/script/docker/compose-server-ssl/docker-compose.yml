@@ -44,10 +44,8 @@ services:
       - db:/var/lib/mysql
       - /etc/localtime:/etc/localtime:ro
     environment:
-    # Create a root password for the maraiadb instance.
-      - MYSQL_ROOT_PASSWORD=CREATE-A-SECURE-ROOT-PASSWORD-HERE
-    # Create a password for the nextcloud users.  If you have to manually connect your database you would use the nextcloud user and this password.
-      - MYSQL_PASSWORD=CREATE-A-SECURE-NEXTCLOUD-USER-PASSWORD-HERE
+      - MYSQL_ROOT_PASSWORD=contraseña-root
+      - MYSQL_PASSWORD=contraseña
       - MYSQL_DATABASE=nextcloud
       - MYSQL_USER=nextcloud
     restart: unless-stopped
@@ -69,11 +67,9 @@ services:
       - ./app/themes:/var/www/html/themes
       - /etc/localtime:/etc/localtime:ro
     environment:
-    # The VIRTUAL_HOST and LETSENCRYPT_HOST should use the same publically reachable domain for your nextlcloud instance.
-      - VIRTUAL_HOST=cloud.DOMAIN.TLD
-      - LETSENCRYPT_HOST=cloud.DOMAIN.TLD
-    # This needs to be a real email as it will be used by let's encrypt for your cert and is used to warn you about renewals.
-      - LETSENCRYPT_EMAIL=YOUR-EMAIL@DOMAIN.TDL
+      - VIRTUAL_HOST=nextcloud.dominio.com
+      - LETSENCRYPT_HOST=nextcloud.dominio.com
+      - LETSENCRYPT_EMAIL=correo
     restart: unless-stopped
   collab:
     image: collabora/code
@@ -88,18 +84,14 @@ services:
     ports:
       - 9980:9980
     environment:
-    # This nees to be the same as what you set your app domain too (ex: cloud.domain.tld).
-      - domain=cloud\\.DOMAIN\\.TDL
-      - username=admin
-    # Create a passoword for the collabora office admin page.
-      - password=CREATE-A-SECURE-PASSWORD-HERE
+      - domain=nextcloud.dominio.com
+      - username=administrador
+      - password=contraseña
       - VIRTUAL_PROTO=https
       - VIRTUAL_PORT=443
-    # The VIRTUAL_HOST and LETSENCRYPT_HOST should use the same publically reachable domain for your collabora instance (ex: office.domain.tld).
-      - VIRTUAL_HOST=office.DOMAIN.TLD
-      - LETSENCRYPT_HOST=office.DOMAIN.TLD
-    # This needs to be a real email as it will be used by let's encrypt for your cert and is used to warn you about renewals.
-      - LETSENCRYPT_EMAIL=YOUR-EMAIL@DOMAIN.TDL
+      - VIRTUAL_HOST=collabora.dominio.com
+      - LETSENCRYPT_HOST=collabora.dominio.com
+      - LETSENCRYPT_EMAIL=correo
     restart: unless-stopped 
 volumes:
   nextcloud:
