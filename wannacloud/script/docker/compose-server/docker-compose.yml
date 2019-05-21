@@ -8,8 +8,8 @@ services:
     volumes:
       - db:/var/lib/mysql
     environment:
-      - MYSQL_ROOT_PASSWORD=Islascanarias_22
-      - MYSQL_PASSWORD=Islascanarias_22
+      - MYSQL_ROOT_PASSWORD=contraseña
+      - MYSQL_PASSWORD=contraseña
       - MYSQL_DATABASE=wannacloud
       - MYSQL_USER=Wannacry
 
@@ -22,21 +22,21 @@ services:
     volumes:
       - nextcloud:/var/www/html
     environment:
-      - MYSQL_ROOT_PASSWORD=Islascanarias_22
-      - MYSQL_PASSWORD=Islascanarias_22
+      - MYSQL_ROOT_PASSWORD=contraseña
+      - MYSQL_PASSWORD=contraseña
       - MYSQL_DATABASE=wannacloud
-      - MYSQL_USER=Wannacry
-      - NEXTCLOUD_ADMIN_USER=Wannacry
-      - NEXTCLOUD_ADMIN_PASSWORD=Wannacry
+      - MYSQL_USER=usuario
+      - NEXTCLOUD_ADMIN_USER=usuario
+      - NEXTCLOUD_ADMIN_PASSWORD=contraseña
     restart:
       always
 
   online:
     image: libreoffice/online:master
     environment:
-      domain: cloud.jmlion.com
-      username: Wannacry
-      password: Islascanarias
+      domain: nube.dominio.com
+      username: usuario
+      password: contraseña
       extra_params: --o:ssl.enable=false
       DONT_GEN_SSL_CERT: 1
     volumes:
