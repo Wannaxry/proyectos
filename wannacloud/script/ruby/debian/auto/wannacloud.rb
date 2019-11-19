@@ -7,6 +7,8 @@ if all != "ruby"
   exit
 end
 
+puts "[INFO] hola jesus"
+
 puts "[INFO] update checking..."
 
 ok = []
